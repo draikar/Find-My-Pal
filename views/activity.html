@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="myApp">
+<head>
+    <meta charset="utf-8" />
+    <title>Profile Info</title>
+	
+	<link rel="stylesheet" href="../static/content/style.css" />
+    
+    
+    
+    
+	
+	
+<!-- Script Files-->
+
+
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+ <script src="https://cdn.firebase.com/libs/angularfire/2.3.0/angularfire.min.js"></script>
+ 
+    
+ <script type="text/javascript" src="../static/scripts/project/activity.js"></script>
+ 
+
+<!-- End of Script-->
+
+
+</head>
+<body class="activity">
+<header> 
+		<div class="header">
+			<img  id="site-logo" src="../static/images/friends.jpg"><a href="/activity"></a></img>
+			<label>FindMyPal</label>
+			<ul>
+				<li id="logout"><a href="/">Sign Out</a></li>
+		
+			</ul>
+
+		</div>
+
+</header>
+
+
+<div id="activity-container"  ng-controller="ActivityController">
+	
+
+	<div class="left-nav">
+		<div class="basic-info">
+			
+			<img id="profile_picture">
+			<p id="profile-name"> <span id="username"> </span></p>
+			<div class="left-nav-list"> 
+				<p> Recommended </p>
+			</div>
+			<div class="left-nav-list"> 
+				<p>All Activities</p>
+				<ul> 
+                        <li ng-click="trimmedResult('Interested')">Interested Category</li>
+						<li ng-click="trimmedResult('Sports')">Sports</li>
+						<li ng-click="trimmedResult('Study')">Study</li>
+						<li ng-click="trimmedResult('Movies')">Movies</li>
+						<li ng-click="trimmedResult('Pool')">Pool</li>
+                        <li ng-click="trimmedResult('Snooker')">Snooker</li>
+				</ul>
+				
+			</div>
+			<div class="left-nav-list">
+				<p>My Activites</p>
+				<ul>
+					<li ng-click="showCreadtedActivities()">Created Activites</li>
+					<li ng-click="showJoinedActivities()">Joined Activites</li>
+                    <li ng-click="showNewEventCreation()">create new Activity</li>
+
+
+				</ul>
+				
+				
+				
+			</div>
+		</div>
+	</div>
+	<div class="right-nav" ng-controller="SomeController">
+
+        <!--New Event Creation Starts Here -->
+        
+        <div ng-if="'newEventCreation' == myView" class="newEvent-description">
+            <h1> Create a new Event </h1>
+            <label>Title </label>
+            <input type="text" id="event-title" placeholder="Please enter the event name" required/>
+            <label>Description </label>
+            <textarea id="event-description" placeholder="enter your event description" required></textarea>
+            <label>Location</label>
+            <input type="text" id="event-location" placeholder="Enter the location" required />
+            <label> Time </label>
+            <input type="time" id="event-time" placeholder="Enter the time of the event" />
+            <label> Date </label>
+            <input type="date" id="event-date" placeholder="mm/dd/yyyy" required/>
+            <div class="event-buttons">
+                <button ng-click="postNewEvent()"> Post Event </button>
+                <button> Reset </button>
+
+            </div>
+            
+             
+        </div>
+
+        <!--New Event Creation Code Ends Here -->
+
+
+
+
+        <!-- Created Events Code Starts Here -->
+
+        <div ng-if="'createdActivities' == myView" id="createdActivites">
+            
+           <ul id = "newEvent"> 
+			
+               <li ng-click="viewCurrentEvent(event)" ng-repeat="event in events.slice().reverse() " class="event">
+                   <ul>
+                       <!--<li style="display:none" id="removeEvent" ng-bind="event.$id"></li>-->
+                       <li class="eventContentOverflow" ng-bind="'Title:' + (event.title)"></li>
+                       <li class="eventContentOverflow" ng-bind="'Description:' + (event.description)"></li>
+                       <li class="eventContentOverflow" ng-bind="'Location:' + (event.location)"></li>
+                       <li ng-bind="'Time:' + (event.time) "></li>
+                       <li ng-bind="'Date:' + (event.date) "></li>
+
+                       <li id="actions"> Edit Event</li>
+                       <li id="actions" ng-click="DeleteEvent($event,event)"> Delete Event  </li>
+
+                   </ul>
+
+               </li>
+			</ul>
+            
+             
+        </div>
+       
+
+       
+
+
+        <!-- Created Events Code Ends Here-->
+
+
+
+        <!-- Interested Category Posts -->
+
+
+        <div ng-if="'interestedActivities' == myView" id="createdActivites">
+  
+                <div ng-repeat="myTitle in interestedCategory" id="filterByCategory">
+                    <p ng-bind="myTitle.$value" id="categoryLabel"></p>
+                    <ul ng-repeat="users in events">
+                        <li ng-repeat="event in users" ng-if="event.title == myTitle.$value">
+
+                            <ul ng-show="angular.isObject(event)"  class="event">
+                                
+                                        <!--<li style="display:none" id="removeEvent" ng-bind="event.$id"></li>-->
+                                        <li class="eventContentOverflow" ng-bind="'Title:' + (event.title)"></li>
+                                        <li class="eventContentOverflow" ng-bind="'Description:' + (event.description)"></liclass="eventContentOverflow">
+                                        <li class="eventContentOverflow" ng-bind="'Location:' + (event.location)"></li>
+                                        <li class="eventContentOverflow" ng-bind="'Time:' + (event.time) "></li>
+                                        <li class="eventContentOverflow" ng-bind="'Date:' + (event.date) "></li>
+
+                                        <li id="actions" ng-click="viewCurrentEvent(event)"> View Event </li>
+                                        <!--<li ng-click="DeleteEvent($event,event)"> Delete Event  </li>-->
+
+                                   
+                            </ul>
+
+                            
+                        </li>
+                    </ul>
+                     
+                </div>
+
+               
+           
+           <p id="noEventMatch" ng-hide= "interestedCategory.length"> No Event which matches this category </p>
+
+        </div>
+
+
+
+
+        <!-- Interested Category Posts -->
+
+
+
+        <!-- Trimmed Results -->
+
+
+        <div ng-if="'trimmedActivites' == myView" id="createdActivites">
+
+            <ul ng-repeat="users in events">
+                
+                <!--<li ng-repeat="(key, value) in users">
+                    <span ng-bind="key"> - </span> <span ng-bind="value"> </span>
+
+                </li>-->
+
+                <li ng-click="viewCurrentEvent(event,key)" ng-repeat="event in users" ng-if="event.title == myTitle">
+
+                    <ul ng-show="angular.isObject(event)" class="event">
+                        
+                        <!--<li class="eventContentOverflow" ng-bind="'ID:' + (event.id)"></li>-->
+                        <li class="eventContentOverflow" ng-bind="'Title:' + (event.title)"></li>
+                        <li class="eventContentOverflow" ng-bind="'Description:' + (event.description)"></li>
+                        <li class="eventContentOverflow" ng-bind="'Location:' + (event.location)"></li>
+                        <li class="eventContentOverflow" ng-bind="'Time:' + (event.time) "></li>
+                        <li class="eventContentOverflow" ng-bind="'Date:' + (event.date) "></li>
+
+                        <li id="actions"> View Event </li>
+                        <!--<li ng-click="DeleteEvent($event,event)"> Delete Event  </li>-->
+
+
+                    </ul>
+
+
+                </li>
+            </ul>
+            <!--<p id="noEventMatch" ng-show="eventExistence"> No Event which matches this category </p>-->
+
+        </div>
+
+
+
+
+        <!-- Trimmed Results -->
+
+        <!-- Current Event View -->
+
+        <div ng-if="'currentEventView' == myView" class="currentEventView">
+
+                   
+            <h1 ng-bind="(currentEvent.title)"></h1>
+            <pre>Activity Time      </pre><p ng-bind="(currentEvent.date) + ' ' + (currentEvent.time)"></p>
+            <pre>Activity Location      </pre> <p ng-bind="currentEvent.location"></p>
+            
+                <h3>Acitivity Description</h3> 
+                <div class="currentEventDescription" ng-bind="(currentEvent.description)"></div>
+
+            
+            <button ng-if="!recordExist" ng-click="joinActivity(currentEvent)"> Join Activity </button>
+            <button ng-if="recordExist" ng-click="unjoinActivity(currentEvent)"> Un Join</button>
+            
+        </div>
+
+
+
+        <!-- Current Event View -->
+
+
+
+        <!-- Joined Activites -->
+
+            <div  ng-if="'joinedActivities' == myView" id="createdActivites">
+
+                <ul id="newEvent">
+
+                    <li ng-click="viewCurrentEvent(event)" ng-repeat="event in joinedActivities.slice().reverse() " class="event">
+                        <ul>
+                            <!--<li style="display:none" id="removeEvent" ng-bind="event.$id"></li>-->
+                            <li class="eventContentOverflow" ng-bind="'Title:' + (event.title)"></li>
+                            <li class="eventContentOverflow" ng-bind="'Description:' + (event.description)"></li>
+                            <li class="eventContentOverflow" ng-bind="'Location:' + (event.location)"></li>
+                            <li ng-bind="'Time:' + (event.time) "></li>
+                            <li ng-bind="'Date:' + (event.date) "></li>
+
+                            <li id="actions"> View Event</li>
+                            
+
+                        </ul>
+
+                    </li>
+                </ul>
+            </div>
+
+
+
+
+        <!-- Joined Activites -->
+
+
+        </div>
+
+
+
+		<!--<div class="event-creation">
+			<input type="text" id="new-event" Placeholder="Post new Event">
+			<input type="button" value="Post">
+			
+		</div>-->
+	</div>
+	
+
+	<!-- Forwarding to Profile Page -->
+		<form action = "/profile" id="homepage">
+
+			<input type="hidden" name = "user_id">
+
+		</form>
+
+	<!-- Forwarding to Profile Page -->
+
+</div>
+</body>
+</html>

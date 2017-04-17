@@ -1,0 +1,477 @@
+body {
+		font-family: arial;
+		margin:0px;
+        background-color:#36454d;
+        font-family: Arial, Helvetica, sans-serif;
+}
+html {
+    height: 100%
+}
+p {
+    margin:0px;
+}
+.parent-div {
+	width:100%;
+	height:620px;	
+}
+
+.login-main {
+		width:100%;
+		height:50%;
+		position: relative;
+		top:15%;
+		margin:0 auto;
+		color:#fff;
+}
+.info {
+    text-align:center;
+    height: 50px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+.info p:first-child {
+    margin-bottom:0px;
+    font-size: 18px;
+    font-weight: 600;
+}
+.info p:last-child {
+    margin-top:5px;
+    font-size:20px;
+}
+#signin-google {
+    cursor:pointer;
+	width: 20%;
+    background: white;
+    margin: auto;
+    height: 40px;
+   
+}
+#signin-google img {
+   display: block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    float: left;
+    margin:8px;
+	
+}
+#signin-google p {
+    color:#000;
+    width: 70%;
+    height: 40px;
+    float: left;
+    margin: 0px 0px 0px 10px;
+    line-height:40px;
+}
+#logo {
+    width:150px;
+    height:150px;
+    margin:auto;
+    display:block;
+    text-align:center;
+    border-radius:100%;
+}
+.errorMsg {
+    width:100%;
+    height:40px;
+    line-height:40px;
+    color:white;
+    background:#cc1a26;
+    text-align:center;
+    font-size:16px;
+    display:none;
+
+}
+
+ @media only screen and (min-width: 800px) and (max-width: 1000px)  {
+
+   #signin-google {
+       width:26%;
+   }
+ }
+ @media only screen and (min-width: 600px) and (max-width: 799px)  {
+
+   #signin-google {
+       width:35%;
+   }
+ }
+  @media only screen and (max-width: 599px)   {
+
+   #signin-google {
+       width:60%;
+   }
+ }
+
+
+  /* Profile Page css */
+
+ .profile {
+      color:#fff;
+     
+  }
+ .profile p {
+     margin:0px;
+ }
+ .profile input {
+     margin:5px 5px 5px 0px;
+ }
+ .profile .basic-info {
+     width:20%;
+     float:left;
+     padding:20px;
+ }
+.profile .basic-info p {
+    margin-bottom:15px;
+    }
+ .profile #profile_picture {
+     width:150px;
+     height:150px;
+     border:1px solid #fff;
+     background:#808080;
+     border: none;
+     
+ }
+ .profile .profile-info {
+     width:75%;
+     float:left;
+     padding:20px 20px 20px 0px;
+ }
+ .profile .success-msg {
+     line-height:40px;
+     width:100%;
+     height:40px;
+     font-size:16px;
+     color:white;
+     background-color:green;
+     text-align:center;
+     margin-bottom:20px;
+     display:none;
+ }
+ #profile_picture {
+     clear:both;
+ }
+ #update_pic {
+    display: none;
+ }
+ .basic-info label.update_pic {
+    display: block;
+    position: relative;
+    top: -44px;
+    width: 150px;
+    text-align: center;
+    background: black;
+    opacity: 0.5;
+    font-size: 13px;
+    padding: 5px 0px 5px 0px;
+    display:none;
+    
+
+ }
+ .basic-info label.update_pic:hover {
+     display:block;
+ }
+.basic-info #profile_picture:hover + label {
+    display:block;
+}
+
+/* Header CSS*/
+.header {
+    width:100%;
+    height:50px;
+    background:#1d3e72;
+    color:white;
+    padding:0px 20px;
+
+}
+.header img {
+    width: 45px;
+    height: 45px;
+    float: left;
+    border-radius: 100%;
+    margin-top:3px;
+    cursor:pointer;
+}
+.header label {
+    float:left;
+    padding-left:10px;
+    font-size:25px;
+    line-height:50px;
+}
+.header ul {
+    float:right;
+    margin:0px;
+    cursor:pointer;
+    display:list-item !important;
+    list-style:none;
+   
+}
+.header ul li {
+    list-style: none;
+    width: 100px;
+    float: left;
+    text-align: center;
+    line-height: 50px;
+    padding-right: 40px;
+    cursor:pointer;
+     margin:0px !important;
+
+}
+.header ul li a,.header ul li a:hover,.header ul li a:visited {
+    color:#fff;
+    text-decoration:none;
+} 
+
+
+
+/* Activity Page CSS*/
+
+.activity .left-nav {
+    padding:10px 10px 0px 15px;
+    width:20%;
+    height:1200px;
+    background:#4286f4;
+    color:#fff;
+   display:inline-block;
+   vertical-align:top;
+}
+
+.activity .right-nav {
+
+    padding:20px 0px 20px 20px;
+    width:75%;
+     display:inline-block;
+     vertical-align:top;
+}
+
+.activity #profile_picture {
+     width:75px;
+     height:75px;
+     border:1px solid #fff;
+     background:#808080;
+     border: none;
+     cursor:pointer;
+ }
+.activity {
+    background:#fff;
+}
+.activity .basic-info {
+    position:relative;
+}
+.activity .basic-info #profile-name {
+   position: absolute;
+    top: 0px;
+    left: 90px;
+}
+.activity ul {
+    padding:0px;
+    margin:0px;
+    cursor:pointer;
+    display:none;
+}
+.activity .left-nav-list:last-child ul {
+    display:list-item;
+    list-style:none;
+}
+.activity ul li {
+    list-style:none;
+    margin:10px 0px;
+   
+}
+.acitivity .left-nav-list {
+    clear:both;
+
+}
+.activity .left-nav-list p {
+    height:30px;
+    line-height:30px;
+    cursor:pointer;
+    font-size:20px;
+    
+}
+.right-nav .event-creation {
+    text-align:center;
+}
+.right-nav .event-creation #new-event {
+    height:75px;
+    width:400px;
+    text-align:center;
+}
+.right-nav .event-creation #new-event:focus {
+    
+    outline:none;
+}
+textarea {
+    resize:none;
+    vertical-align:middle;
+}
+
+.event-creation ul {
+    display:list-item;
+    list-style:none;
+}
+/* Activity Page CSS*/
+
+
+/*  New Event Description CSS    */
+
+.newEvent-description {
+    width:50%;
+    margin:0 auto;
+
+}
+.newEvent-description h1{
+    text-align:center;
+}
+.newEvent-description label {
+    width: 30%;
+    display:block;
+    float:left;
+}
+.newEvent-description input {
+    width: 50%;
+    float:left;
+    
+}
+.newEvent-description input, .newEvent-description label {
+    margin: 10px;
+    height:30px;
+    line-height:30px;
+    text-align:center;
+}
+.newEvent-description button {
+    clear:both;
+   
+}
+#event-description {
+    height:100px;
+    width: 50%;
+    
+    margin:10px;
+}
+.newEvent-description .event-buttons {
+    width: 50%;
+    margin: 0px auto;
+    clear:both;
+    float:none;
+    position:relative;
+    top:30px; 
+}
+
+.newEvent-description  .event-buttons button {
+    margin:5px;
+}
+#createdActivites ul {
+    display:list-item !important;
+    list-style:none;
+}
+#createdActivites .event {
+    width:22%;
+    margin-right:2%;
+    display:inline-block;
+    /*border:1px solid black;*/
+    background:#eee;
+    padding:5px;
+    float:left;
+    min-height:210px;
+    text-align:center;
+    margin-top:25px;
+}
+#createdActivites .event:hover {
+    
+    -webkit-box-shadow: #d0d0d0 0 0 4px 4px;
+   -moz-box-shadow: #d0d0d0 0 0 4px 4px;
+   box-shadow: #d0d0d0 0 0 4px 4px;
+   
+
+}
+#createdActivites .event:nth-child(5n) {  
+  clear:both;
+  float:left;
+}
+#createdActivites .event li#actions ,  #createdActivites .event li#actions {
+    background:red;
+    height:30px;
+    line-height:30px;
+    background:#1d3e72;
+    color:#fff;
+
+}
+#noEventMatch {
+    color: #4286f4;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 32px;
+    text-align: center;
+    display: block;
+    position: relative;
+    top: 100px;
+
+}
+.eventContentOverflow {
+   overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical; 
+}
+div#filterByCategory:first-child {
+   padding-top:0px;
+}
+
+ 
+div#filterByCategory {
+    clear:both;
+    margin-top:20px;
+    padding-top:20px;
+}
+
+p#categoryLabel {
+    width: 100%;
+    background: #419b80;
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    color:#fff;
+}
+#valueInitialization {
+    display:none;
+}
+/*  New Event Description CSS    */
+
+
+/*=============currentEventView===========*/
+.currentEventView pre {
+    width: 20%;
+    display: inline-block;
+    margin-top: 0px;
+    font-size: 16px;
+    font-family: Arial;
+    clear:both;
+}
+.currentEventView p {
+     display: inline-block;
+     clear:both;
+     width:70%;
+     opacity: 0.6;
+}
+.currentEventView h3 {
+    font-weight: bold;
+    font-size:16px;
+}
+.currentEventDescription {
+    margin:20px 0px;
+     font-size:14px;
+}
+.currentEventView button {
+    width:150px;
+    background:#3daa98;
+    color:#fff;
+    height:30px;
+    line-height:30px;
+    border:none;
+
+}
+
+
+
+/*=============currentEventView===========*/
