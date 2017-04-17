@@ -153,6 +153,17 @@ p {
  #update_pic {
     display: none;
  }
+ .user-interested-category  label{
+    
+     height:40px;
+     display:inline-block;
+ }
+ .user-interested-category  input{
+     margin-right:25px;
+     margin-left: 10px;
+    position: relative;
+    top: 2px;
+ }
  .basic-info label.update_pic {
     display: block;
     position: relative;

@@ -14,7 +14,7 @@
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
  <script type="text/javascript" src="../static/scripts/project/profile.js"></script>
- <script type="text/javascript" src="/static/scripts/profile.js"></script>
+ <script type="text/javascript" src="/static/scripts/Project/profile.js"></script>
 
 <!-- End of Script-->
 
@@ -92,9 +92,13 @@
 			Interested Category
 			</Label>
 			<br>
-			<input type="checkbox" name="interested-category" value = "Snooker">Snooker</input>
-			<input type="checkbox" name="interested-category" value="PingPong">PingPong</input>
-			<input type="checkbox" name="interested-category" value="Library">Library</input>
+			<label>Snooker</label><input type="checkbox" name="interested-category" value = "Snooker"></input>
+			<label>PingPong</label><input type="checkbox" name="interested-category" value="PingPong"></input>
+			<label>Library</label><input type="checkbox" name="interested-category" value="Library"></input><br>
+			<label>Pool</label><input type="checkbox" name="interested-category" value="Pool"></input>
+			<label>Sports</label><input type="checkbox" name="interested-category" value="Sports"></input>
+			<label>Study</label><input type="checkbox" name="interested-category" value="Study"></input>
+			<label>Movies</label><input type="checkbox" name="interested-category" value="Movies"></input>
 		
 		</div>
 		
