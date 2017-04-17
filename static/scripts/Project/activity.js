@@ -25,13 +25,15 @@ var app = angular.module('myApp', ['firebase']);
 var databaseRef = firebase.database().ref().child('Events').child(uid);
 
 
-app.controller('SomeController', ['$scope', '$firebaseArray', function ($scope, $firebaseArray) {
+app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObject', function ($scope, $firebaseArray, $firebaseObject) {
 
+    var joinedActivityDbRef = firebase.database().ref().child('joinedActivities').child(uid);
 
+    console.log(joinedActivityDbRef);
 
     //====================New Event Posting to database =======================//
     var eventObj = {};
-    
+
     $scope.postNewEvent = function () {
         eventObj.title = document.getElementById('event-title').value;
         eventObj.description = document.getElementById('event-description').value;
@@ -46,29 +48,22 @@ app.controller('SomeController', ['$scope', '$firebaseArray', function ($scope, 
 
             var id = databaseRef.key;
             console.log("added record with id " + id);
-           
+
             updateObject(id);
-           
+
             // returns location in the array
         });
         function updateObject(refId) {
-           
+
             eventObj.id = refId;
             databaseRef.child(refId).set(eventObj).then(function () {
 
                 //$scope.events = $firebaseArray(databaseRef);
                 console.log("object created");
-               
+
 
             });
         }
-       
-       
-       
-
-
-
-
 
     }
     //====================New Event Posting to database =======================//
@@ -79,24 +74,22 @@ app.controller('SomeController', ['$scope', '$firebaseArray', function ($scope, 
     $scope.DeleteEvent = function ($event, event) {
 
         var events = $firebaseArray(databaseRef);
+       
         $scope.events.$remove(event);
 
+        joinedActivityDbRef.child(event.$id).remove().then(function () {
+
+            console.log("Deleted from joined events if the event is joined")
+        });
+
+        
     }
 
     //===========================Event Deletion==============================//
 
 
 
-
-
-}]);
-
-app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObject', function ($scope, $firebaseArray, $firebaseObject) {
-
-    var joinedActivityDbRef = firebase.database().ref().child('joinedActivities').child(uid);
-
-    
-
+    //=======================Show created Events and new Event Creation =============================//
     $scope.showCreadtedActivities = function () {
 
         $scope.myView = "createdActivities";
@@ -111,6 +104,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
        
 
     }
+    //=======================Show created Events and new Event Creation =============================//
 
 
 

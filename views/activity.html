@@ -81,7 +81,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="right-nav" ng-controller="SomeController">
+	<div class="right-nav">
 
         <!--New Event Creation Starts Here -->
         
@@ -153,7 +153,7 @@
                 <div ng-repeat="myTitle in interestedCategory" id="filterByCategory">
                     <p ng-bind="myTitle.$value" id="categoryLabel"></p>
                     <ul ng-repeat="users in events">
-                        <li ng-repeat="event in users" ng-if="event.title == myTitle.$value">
+                        <li ng-click="viewCurrentEvent(event)" ng-repeat="event in users" ng-if="event.title == myTitle.$value">
 
                             <ul ng-show="angular.isObject(event)"  class="event">
                                 
@@ -164,7 +164,7 @@
                                         <li class="eventContentOverflow" ng-bind="'Time:' + (event.time) "></li>
                                         <li class="eventContentOverflow" ng-bind="'Date:' + (event.date) "></li>
 
-                                        <li id="actions" ng-click="viewCurrentEvent(event)"> View Event </li>
+                                        <li id="actions"> View Event </li>
                                         <!--<li ng-click="DeleteEvent($event,event)"> Delete Event  </li>-->
 
                                    
