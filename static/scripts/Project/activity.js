@@ -29,7 +29,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
     var joinedActivityDbRef = firebase.database().ref().child('joinedActivities').child(uid);
 
-    console.log(joinedActivityDbRef);
+    $scope.myView = "newEventCreation";
 
     //====================New Event Posting to database =======================//
     var eventObj = {};
@@ -40,6 +40,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         eventObj.location = document.getElementById('event-location').value;
         eventObj.time = document.getElementById('event-time').value;
         eventObj.date = document.getElementById('event-date').value;
+        eventObj.category = document.getElementById('category').value;
 
 
         var events = $firebaseArray(databaseRef);
@@ -59,12 +60,31 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
             databaseRef.child(refId).set(eventObj).then(function () {
 
                 //$scope.events = $firebaseArray(databaseRef);
-                console.log("object created");
+                $(function () {
+
+                    $("#eventMessage").text("Event has been Posted successfully");
+                    $("#eventMessage").slideDown();
+                    setTimeout(function () {
+                        $("#eventMessage").slideUp();
+                    }, 3000)
+                });
+               
 
 
             });
         }
 
+    }
+    $scope.resetForm = function () {
+
+        $(function () {
+
+            $("#eventMessage").text("The form has been reset");
+            $("#eventMessage").slideDown();
+            setTimeout(function () {
+                $("#eventMessage").slideUp();
+            }, 3000)
+        });
     }
     //====================New Event Posting to database =======================//
 
@@ -117,22 +137,28 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
        
 
-        if (eventTitle != "Interested") {
+        if (eventTitle != "Interested" && eventTitle != "all") {
 
+            
             $scope.myView = "trimmedActivites";
             $scope.events = $firebaseArray(databaseRefTrimResults);
             console.log($scope.events);
             $scope.myTitle = eventTitle;
            
         }
+        else if (eventTitle == "all") {
+            $scope.myView = "allActivites";
+            $scope.events = $firebaseArray(databaseRefTrimResults);
+        }
         else {
-
+            
             // Interested Activities 
             $scope.myView = "interestedActivities";
             var databaseUserProfileRef = firebase.database().ref().child('user_profiles');
             var specificUsrRef = databaseUserProfileRef.child(uid + "/interested_category");
             $scope.events = $firebaseArray(databaseRefTrimResults);
             $scope.interestedCategory = $firebaseArray(specificUsrRef);
+            
            
         }
 
@@ -244,7 +270,25 @@ $(document).ready(function () {
 
         if (user) {
             currentUser = user;
-            document.getElementById("username").innerHTML = user.displayName;
+            console.log(firebase.database().ref('/user_profiles/' + uid));
+            
+            firebase.database().ref('/user_profiles/' + uid).once('value').then(function (snapshot) {
+                console.log(snapshot.val());
+                var username = snapshot.val().nickname;
+                if (username) {
+                    document.getElementById("username").innerHTML = username;
+                }
+                else {
+                    document.getElementById("username").innerHTML = user.displayName;
+                }
+            }).catch(function (error) {
+
+                document.getElementById("username").innerHTML = user.displayName;
+
+            });
+
+
+            
 
         }
         else {
@@ -301,7 +345,7 @@ $(document).ready(function () {
 
     //Profile Page Forwarding 
 
-    $(".activity #profile_picture").on('click', function () {
+    $(".activity #profile_picture,.activity #profile-name ").on('click', function () {
 
 
         $("#homepage input").val(uid);
@@ -319,6 +363,11 @@ $(document).ready(function () {
 
     });
 
+    $(".left-nav-list ul li").on('click', function () {
 
+        $(this).parents('.left-nav-list').siblings('div.left-nav-list').find('li').css('color', '#fff');
+        $(this).siblings().css("color", "#fff");
+        $(this).css("color","#000");
+    });
 
 });
