@@ -1,4 +1,4 @@
-﻿// Initialize Firebase
+// Initialize Firebase
 
 
 $(document).ready(function () {
@@ -57,13 +57,12 @@ $(document).ready(function () {
         
         $('.user-education-level input[value=' + user_info.eduction_level + ']').prop('checked', true);
         $('.user-education-year input[value=' + user_info.education_year + ']').prop('checked', true);
-
-
         $.each(user_info.interested_category, function (index,value) {
             
             $('.user-interested-category input[value=' + value + ']').prop('checked', true);
           
         });
+        
         
        // $("#profile_picture").attr('src', snapshot.val().profile_picture);
     });
@@ -73,15 +72,53 @@ $(document).ready(function () {
     $("#update_profile").click(function(){
     
         var userProfile= {}; 
-        userProfile.firstname = $("#firstname").val();
-        userProfile.lastname = $("#lastname").val();
-        userProfile.middlename = $("#middlename").val();
-        userProfile.nickname = $("#nickname").val();
-        userProfile.gender = $("#gender option:selected").text();
+        userProfile.firstname = $("#firstname").val().trim();
+        userProfile.lastname = $("#lastname").val().trim();
+        userProfile.middlename = $("#middlename").val().trim();
+        userProfile.nickname = $("#nickname").val().trim();
+        userProfile.gender = $("#gender option:selected").text().trim();
         userProfile.email = currentUser.email;
-        userProfile.eduction_level = $("input[name='education-level']:checked").val();
-        userProfile.education_year = $("input[name='education-year']:checked").val();
 
+        if(userProfile.firstname === "") {
+          alert("First name cannot be empty");
+          return;
+        }
+        if(userProfile.lastname === "") {
+          alert("Last name cannot be empty");
+          return;
+        }
+        if(userProfile.nickname === "") {
+          alert("Nickname cannot be empty");
+          return;
+        }
+        if(userProfile.gender === "Choose Gender") {
+          alert("Please choose a gender");
+          return;
+        }
+
+        var educationLevel = $("input[name='education-level']:checked");
+        if(educationLevel.length === 0) {
+          alert("Please choose an education level")
+          return
+        } else {
+          userProfile.eduction_level = educationLevel.val();
+        }
+
+        var educationYear = $("input[name='education-year']:checked")
+        if(educationYear.length == 0) {
+          alert("Please choose an education level");
+          return;
+        } else if(educationYear.val().trim() == "Other") {           
+            var otherYear = $("#other-edu-year").val().trim();
+            if(otherYear === "") {
+              alert("Please input that other education year");                     
+              return;
+            } else {                
+              userProfile.education_year = otherYear;
+            }
+        } else {
+          userProfile.education_year = educationYear.val();
+        }
 
         var interested_category = [];
         $.each($("input[name='interested-category']:checked"), function () {
