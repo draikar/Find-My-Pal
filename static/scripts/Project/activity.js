@@ -6,6 +6,8 @@ var user_id = url[1].split('=');
 var uid = user_id[1];
 
 
+
+
 // Initialize Firebase
 var config = {
     apiKey: "AIzaSyD8_nEsadS4xowGxBSAzipb5r1uqRiu6V4",
@@ -18,31 +20,49 @@ var config = {
 
 firebase.initializeApp(config);
 
+var currrent_user_displayName;
+firebase.database().ref('/user_profiles/' + uid).once('value').then(function (snapshot) {
+    currrent_user_displayName = snapshot.val().displayName;
+});
+
+
 /* ================== Event Management ============================*/
 
 var app = angular.module('myApp', ['firebase']);
 
 var databaseRef = firebase.database().ref().child('Events').child(uid);
+var eventsDB = firebase.database().ref().child('Events');
 
 
 app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObject', function ($scope, $firebaseArray, $firebaseObject) {
 
-    var joinedActivityDbRef = firebase.database().ref().child('joinedActivities').child(uid);
-
-    $scope.myView = "newEventCreation";
+   
+    
+    $scope.myView = "allActivites";
+    $scope.newPost = true;
 
     //====================New Event Posting to database =======================//
     var eventObj = {};
+    
+
 
     $scope.postNewEvent = function () {
+       
+        eventObj.users = [];
+        eventObj.joinedUserIds = [];
         eventObj.title = document.getElementById('event-title').value;
         eventObj.description = document.getElementById('event-description').value;
         eventObj.location = document.getElementById('event-location').value;
         eventObj.time = document.getElementById('event-time').value;
         eventObj.date = document.getElementById('event-date').value;
-        eventObj.category = document.getElementById('category').value;
+        eventObj.category = document.getElementById('event-category').value;
+        eventObj.joinedUserIds.push(uid);
+        eventObj.users.push(currrent_user_displayName);
+        eventObj.createdBy = uid;
+        eventObj.username = currrent_user_displayName;
+        
 
-
+        console.log(eventObj);
         var events = $firebaseArray(databaseRef);
 
         events.$add(eventObj).then(function (databaseRef) {
@@ -59,26 +79,53 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
             eventObj.id = refId;
             databaseRef.child(refId).set(eventObj).then(function () {
 
-                //$scope.events = $firebaseArray(databaseRef);
                 $(function () {
 
                     $("#eventMessage").text("Event has been Posted successfully");
-                    $("#eventMessage").slideDown();
                     setTimeout(function () {
+                        $(function () {
+
+                            $("#newEvent #newPost:first-child ul li#categoryLabel").append("<img id='newEventImage' src='../static/images/new.gif' />");
+                        });
+                        $("#eventMessage").slideDown();
+                    }, 500)
+                   
+                    setTimeout(function () {
+
+                        $(function () {
+
+                            $("#newEvent #newPost:first-child ul li#categoryLabel img").remove();
+                        });
                         $("#eventMessage").slideUp();
-                    }, 3000)
+                    }, 4000)
+                    
+                   createdActivities();
+                   
                 });
                
 
 
             });
+
+            
+
+
+
         }
 
     }
+
+    function createdActivities() {
+
+        $scope.showCreadtedActivities();
+
+    }
+
     $scope.resetForm = function () {
 
         $(function () {
-
+            $(".newEvent-description input,.newEvent-description textarea").val("");
+            $(".newEvent-description select").val($(".newEvent-description select option:first").val());
             $("#eventMessage").text("The form has been reset");
             $("#eventMessage").slideDown();
             setTimeout(function () {
@@ -88,19 +135,93 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
     }
     //====================New Event Posting to database =======================//
 
+    //====================Edit Event ===================================//
+
+    $scope.EditEvent = function (event) {
+        
+        console.log(event);
+        $scope.myView = "newEventCreation";
+        $scope.editPost = true;
+        $scope.newPost = false;
+        
+        setTimeout(function () {
+            
+            document.getElementById('event-title').value = event.title;
+            document.getElementById('event-description').value = event.description;
+            document.getElementById('event-location').value = event.location;
+            document.getElementById('event-time').value = event.time;
+            document.getElementById('event-date').value = event.date;
+            document.getElementById('event-category').value = event.category;
+            document.getElementById('event-id').value = event.id;
+            document.getElementById('users-registered').value = event.users;
+            document.getElementById('createdBy').value = event.createdBy;
+            document.getElementById('event-username').value = event.username;
+            document.getElementById('event-joinedUserIds').value = event.joinedUserIds;
+            
+
+        }, 500)
+
+
+        
+    }
+
+    $scope.saveEditedEvent = function () {
+
+        var editedPost = {};
+
+        editedPost.title = document.getElementById('event-title').value;
+        editedPost.description = document.getElementById('event-description').value;
+        editedPost.location = document.getElementById('event-location').value;
+        editedPost.time = document.getElementById('event-time').value;
+        editedPost.date = document.getElementById('event-date').value;
+        editedPost.category = document.getElementById('event-category').value;
+        editedPost.id = document.getElementById('event-id').value;
+        editedPost.createdBy = document.getElementById('createdBy').value;
+        editedPost.username = document.getElementById('event-username').value;
+        editedPost.users = document.getElementById('users-registered').value.split(",");
+        editedPost.joinedUserIds = document.getElementById('event-joinedUserIds').value.split(",");
+
+
+       
+        
+        databaseRef.child(editedPost.id).set(editedPost).then(function () {
+
+            //$scope.events = $firebaseArray(databaseRef);
+            $(function () {
+
+                $("#eventMessage").text("Event has been edited successfully");
+                $("#eventMessage").slideDown();
+                setTimeout(function () {
+                    $("#eventMessage").slideUp();
+                }, 3000)
+            });
+
+
+
+        });
+       
+
+    }
+
+
+    //==================Edit Event ==================================//
+
+
 
     //===========================Event Deletion==============================//
 
     $scope.DeleteEvent = function ($event, event) {
 
-        var events = $firebaseArray(databaseRef);
-       
-        $scope.events.$remove(event);
+        var userAcceptance = confirm("Want to delete?");
+        if (userAcceptance) {
+            //Logic to delete the item
+            var events = $firebaseArray(databaseRef);
 
-        joinedActivityDbRef.child(event.$id).remove().then(function () {
+            $scope.events.$remove(event);
 
-            console.log("Deleted from joined events if the event is joined")
-        });
+            
+        }
+        
 
         
     }
@@ -120,6 +241,12 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
     $scope.showNewEventCreation = function () {
 
+        $scope.editPost = false;
+        $scope.newPost = true;
+        $(function () {
+            $(".newEvent-description input,.newEvent-description textarea").val("");
+           $(".newEvent-description select").val($(".newEvent-description select option:first").val());
+        })
         $scope.myView = "newEventCreation";
        
 
@@ -131,7 +258,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
     //===========================Trimmed Result && Interested Category ===========================//
 
     $scope.trimmedResult = function (eventTitle) {
-
+    
 
         var databaseRefTrimResults = firebase.database().ref().child('Events');
 
@@ -174,36 +301,52 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
     $scope.viewCurrentEvent = function (event) {
 
-        console.log(event);
-        $scope.currentEvent = event;
-
         $scope.myView = "currentEventView";
+        $scope.currentObjId = event.id;
+        $scope.userCreatedEvent = false;
+        //$scope.currentEvent = event;
+
+        //$scope.viewcount = 1;
+        console.log(event);
+        var currentViewObject = eventsDB.child(event.createdBy);
+        $scope.Events = $firebaseArray(currentViewObject);
+
+        console.log($scope.currentEvent);
+
         //Check for Joined Activity 
-        var eventsJoined = $firebaseArray(joinedActivityDbRef);
-       
-        eventsJoined.$loaded().then(function (eventsJoined) {
+        if (event.createdBy == uid) {
 
-            if (event.$id) {
-                $scope.recordExist = angular.isObject(eventsJoined.$getRecord(event.$id));
-            }
-            else {
-                $scope.recordExist = angular.isObject(eventsJoined.$getRecord(event.id));
-            }
-            
+            $scope.userCreatedEvent = true;
+            $scope.joinUser = false;
+        }
+        else {
+
+            joinedActivity(event);
+        }
            
-
-        });
+   
+        //Check for Joined Activity 
        
+       
+        
+       
+
+        //=======================Limiting the registered Users====================== //
+
+        viewLess();
+
+        
+        //=======================Limiting the registered Users====================== //
+
 
     }
-
-    //=============================Current Event View Ends Here ========================//
 
 
     //============================Joined Activity Code Starts Here ======================//
 
     $scope.joinActivity = function (event) {
        
+        
         var newEvent = angular.copy(event); //This is created to preserve the $$hashkey,$id,$priority property in the original object
        
         console.log(newEvent);
@@ -215,13 +358,69 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
             id = event.id;
         }
         
+        if (newEvent.joinedUserIds.indexOf(uid) === -1) {
+            newEvent.joinedUserIds.push(uid);
+
+        }
+        if (newEvent.users.indexOf(currrent_user_displayName) === -1) {
+            newEvent.users.push(currrent_user_displayName);
+            
+        }
+
+        
         delete newEvent.$$hashKey;
         delete newEvent.$id;
         delete newEvent.$priority;
-        joinedActivityDbRef.child(id).set(newEvent).then(function () {
 
-            $scope.joinedNewEvents = $firebaseArray(joinedActivityDbRef);
-            $scope.recordExist = true;
+        eventsDB.child(event.createdBy).child(event.id).set(newEvent).then(function () {
+
+            //$scope.events = $firebaseArray(databaseRef);
+            $(function () {
+
+                $("#eventMessage").text("You have successfully joined an Event");
+                $("#eventMessage").slideDown();
+                setTimeout(function () {
+                    $("#eventMessage").slideUp();
+                }, 3000)
+            });
+
+            joinedActivity(event);
+
+        });
+
+        
+
+
+    }
+
+    function joinedActivity(event) {
+
+        var event = eventsDB.child(event.createdBy);
+        var eventsJoined = $firebaseArray(event);
+
+
+        var userId = [];
+
+
+        eventsJoined.$loaded().then(function (eventsJoined) {
+
+            angular.forEach(eventsJoined, function (value, index) {
+                userId = value.joinedUserIds;
+
+            })
+
+            $scope.joinUser = true;
+
+            if (userId.indexOf(uid) !== -1) {
+
+                $scope.recordExist = true;
+            }
+
+            else {
+                $scope.recordExist = false;
+            }
+
+
 
         });
     }
@@ -235,24 +434,63 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         else {
             id = event.id;
         }
+        //Removing the perosn from the joined activites
+
+
+        var newEvent = angular.copy(event);
+
+        delete newEvent.$$hashKey;
+        delete newEvent.$id;
+        delete newEvent.$priority;
+
+
+        if (newEvent.joinedUserIds.indexOf(uid) !== -1) {
+            newEvent.joinedUserIds.splice(newEvent.joinedUserIds.indexOf(uid), 1);
+
+        }
+        if (newEvent.users.indexOf(currrent_user_displayName) !== -1) {
+            newEvent.users.splice(newEvent.users.indexOf(currrent_user_displayName), 1);
+
+        }
        
-        joinedActivityDbRef.child(id).remove().then(function (eventsJoined) {
 
-            $scope.joinedNewEvents = $firebaseArray(joinedActivityDbRef);
-            $scope.recordExist = false;
+        eventsDB.child(event.createdBy).child(event.id).set(newEvent).then(function () {
 
+            
+            $(function () {
+
+                $("#eventMessage").text("You have successfully opted out  an Event");
+                $("#eventMessage").slideDown();
+                setTimeout(function () {
+                    $("#eventMessage").slideUp();
+                }, 3000)
+            });
+
+
+            joinedActivity(event);
         });
+
+       
     }
 
     $scope.showJoinedActivities = function () {
+
         $scope.myView = "joinedActivities";
-        $scope.joinedActivities = $firebaseArray(joinedActivityDbRef);
+
+        $scope.events = $firebaseArray(eventsDB);
+        $scope.currentUsrId = uid;
+        
+
         
     }
 
     //=============================Joined Activity Code Ends Here ========================//
 
     
+        
+        $scope.trimmedResult("all");
+
+
 
 }]);
 
@@ -356,13 +594,14 @@ $(document).ready(function () {
 
 
 
-    $(".left-nav-list p").on('click', function () {
+    //$(".left-nav-list p").on('click', function () {
 
-        $(this).parent().siblings('div.left-nav-list').find('ul').hide('slow');
-        $(this).siblings('ul').show('slow');
+    //    $(this).parent().siblings('div.left-nav-list').find('ul').hide('slow');
+    //    $(this).siblings('ul').show('slow');
 
-    });
+    //});
 
+    $(".left-nav-list ul li:first-child").css('color', '#000');
     $(".left-nav-list ul li").on('click', function () {
 
         $(this).parents('.left-nav-list').siblings('div.left-nav-list').find('li').css('color', '#fff');
@@ -371,3 +610,57 @@ $(document).ready(function () {
     });
 
 });
+
+
+
+//==========Show all registerd Users =========//
+function viewAll() {
+
+    $(function () {
+
+        $(".registeredUsers ul li").each(function () {
+
+            $(this).show();
+
+        });
+        $(".registeredUsers ul:last-child").append('<li onClick="viewLess()"  class="viewUsers" id="viewLessUsers">view less</li>');
+        $(".registeredUsers #viewAllUsers").remove();
+    });
+}
+
+
+function viewLess() {
+
+    $(function () {
+
+        var limit = 2;
+        var i = 0;
+        var viewLimitExceeds = false;
+
+        $(".registeredUsers ul li").each(function () {
+
+            if (i <= limit) {
+                $(this).show();
+                i++;
+            }
+            else {
+                $(this).hide();
+                viewLimitExceeds = true;
+            }
+
+        });
+
+        if (viewLimitExceeds == true) {
+            $(".registeredUsers ul:last-child").append('<li onClick="viewAll()"  class="viewUsers" id="viewAllUsers">view all registered Users</li>');
+            $(".registeredUsers #viewLessUsers").remove();
+        }
+
+    });
+
+}
+//==========Show all registerd Users =========//
+
+
+
+
+

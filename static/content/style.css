@@ -282,7 +282,7 @@
         padding:0px;
         margin:0px;
         cursor:pointer;
-        display:none;
+        /*display:none;*/
     }
     .activity .left-nav-list:last-child ul {
         display:list-item;
@@ -407,7 +407,7 @@
         background:#eee;
         /*padding:5px;*/
         float:left;
-        min-height:180px;
+        min-height:240px;
         text-align:center;
         margin-top:25px;
     }
@@ -524,3 +524,44 @@
     }
     
     /*=============currentEventView===========*/
+
+
+    .registeredUsers ul {
+        display:list-item !important;
+        list-style:none;
+    }
+    .viewUsers {
+        text-decoration:underline;
+        color:sandybrown;
+        cursor:pointer;
+    }
+    .trimmedView {
+        position:relative;
+        
+    }
+    .trimmedView li:last-child {
+        position:absolute;
+        width:100%;
+        bottom:0px;
+
+    }
+    #newEventImage {
+        width:50px;
+        height:50px;
+        float:left;
+    }
+    #createNew {
+        text-decoration:underline;
+        color:darkgray;
+        cursor:pointer;
+    }
+    #banner {
+    width: 100%;
+    background: #e3e3e3;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    color: blue;
+    font-size: 20px;
+    font-weight: 600;
+    }

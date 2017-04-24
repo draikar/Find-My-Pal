@@ -82,12 +82,76 @@ $(document).ready(function () {
         userProfile.eduction_level = $("input[name='education-level']:checked").val();
         userProfile.education_year = $("input[name='education-year']:checked").val();
 
+       
 
         var interested_category = [];
         $.each($("input[name='interested-category']:checked"), function () {
             interested_category.push($(this).val());
         });
-        userProfile.interested_category = interested_category; 
+        userProfile.interested_category = interested_category;
+
+
+
+
+        //Script for validation
+
+        if (userProfile.firstname === "") {
+            
+            document.getElementById('profilePageMsg').innerHTML = "Please update your First Name";
+            showMessage();
+            return;
+        }
+        if (userProfile.lastname === "") {
+           
+            document.getElementById('profilePageMsg').innerHTML = "Please update your Last Name";
+            showMessage();
+            return;
+        }
+        if (userProfile.nickname === "") {
+           
+            document.getElementById('profilePageMsg').innerHTML = "Please update your Nick Name";
+            showMessage();
+            return;
+        }
+        if (userProfile.gender === "Choose Gender") {
+            
+            document.getElementById('profilePageMsg').innerHTML = "Please update your Gender";
+            showMessage();
+            return;
+        }
+
+        var educationLevel = $("input[name='education-level']:checked");
+        if (educationLevel.length === 0) {
+           
+            document.getElementById('profilePageMsg').innerHTML = "Please update your Education Level";
+            showMessage();
+            return
+        } else {
+            userProfile.eduction_level = educationLevel.val();
+        }
+
+        var educationYear = $("input[name='education-year']:checked")
+        if (educationYear.length == 0) {
+           
+            document.getElementById('profilePageMsg').innerHTML = "Please update your Education Year";
+            showMessage();
+            return;
+        }
+        /*else if (educationYear.val().trim() == "Other") {
+            var otherYear = $("#other-edu-year").val().trim();
+            if (otherYear === "") {
+                alert("Please input that other education year");
+                return;
+            } else {
+                userProfile.education_year = otherYear;
+            }
+            } */ 
+        else {
+            userProfile.education_year = educationYear.val();
+        }
+
+
+        //script for validation
          
         console.log(userProfile);
     
@@ -120,7 +184,13 @@ $(document).ready(function () {
         }, 3000) 
     }
 
-   
+    function showMessage() {
+
+        $(".success-msg").slideDown();
+        setTimeout(function () {
+            $(".success-msg").slideUp();
+        }, 3000)
+    }
 
     //Profile Page 
 

@@ -34,12 +34,9 @@
 
 </header>
 <div id="profilePic">
-	<!-- 
-	<label for="user_photo"><img id="profile_picture" for="user_photo"></img></label>
-	<input type="file" id="user_photo"></input> -->
-
+	
 	<div class="success-msg">
-		<p> Your Profile has been Updated!!! </p>
+		<p id="profilePageMsg"> Your Profile has been Updated!!! </p>
 	</div>
 	<div class="basic-info">
 		<p> Hello <span id="username"> </span></p>
@@ -48,14 +45,14 @@
 		<input type="file" id="update_pic"> </input>
 	</div>
 	<div class="profile-info">
-		<input type="text" placeholder="FirstName" id="firstname" />
+		<input type="text" placeholder="FirstName" id="firstname"/>
 		<input type="text" placeholder="MiddleName" id="middlename"/>
 		<input type="text" placeholder="LastName" id="lastname"/>
 		<br>
 		<input type="text" placeholder="Nickname" id="nickname"/>
 		<br>
 		<select id="gender">
-			<option>Choose Gendeer</option>
+			<option>Choose Gender</option>
 			<option>Male</option>
 			<option>Female</option>
 			<option>Prefer not to specify</option>
@@ -67,7 +64,7 @@
 			Education Level
 			</Label> <br>
 
-			<input type="radio" name="education-level" value="UnderGraudate">UnderGraudate</input>
+			<input type="radio" name="education-level" value="UnderGraduate">UnderGraudate</input>
 			<input type="radio" name="education-level" value="Graduate">Graduate</input>
 			<input type="radio" name="education-level" value = "PhD">PhD</input>
 
@@ -84,7 +81,7 @@
 			<input type="radio" name="education-year" value = "Junior">Junior</input>
 			<input type="radio" name="education-year" value = "Senior">Senior</input>
 			<input type="radio" name="education-year" value = "Other">Other</input>
-			<input type="text" placeholder="Please specify the category" />
+			<input type="text" id="other-edu-year" placeholder="Please specify the category" />
 		</div>
 		<br>
 		<div class="user-interested-category">
@@ -92,7 +89,7 @@
 			Interested Category
 			</Label>
 			<br>
-			<label>Libray</label><input type="checkbox" name="interested-category" value = "Libray"></input>
+			<label>Library</label><input type="checkbox" name="interested-category" value = "Library"></input>
 			<label>Sports</label><input type="checkbox" name="interested-category" value="Sports"></input>
 			<label>Rec Center</label><input type="checkbox" name="interested-category" value="RecCenter"></input><br>
 			<label>Pool</label><input type="checkbox" name="interested-category" value="Pool"></input>
