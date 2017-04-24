@@ -1,4 +1,4 @@
-﻿// Initialize Firebase
+// Initialize Firebase
 
 
 $(document).ready(function () {
