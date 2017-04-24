@@ -61,7 +61,6 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         eventObj.createdBy = uid;
         eventObj.username = currrent_user_displayName;
         
-
         console.log(eventObj);
         var events = $firebaseArray(databaseRef);
 
