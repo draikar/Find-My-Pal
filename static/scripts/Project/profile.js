@@ -133,7 +133,8 @@ $(document).ready(function () {
             userProfile.eduction_level = educationLevel.val();
         }
 
-        var educationYear = $("input[name='education-year']:checked")
+        var educationYear = $("input[name='education-year']:checked");
+        console.log(educationYear);
         if (educationYear.length == 0) {
            
             document.getElementById('profilePageMsg').innerHTML = "Please update your Education Year";
@@ -156,7 +157,7 @@ $(document).ready(function () {
 
         //script for validation
          
-        console.log(userProfile);
+        
     
         writeUserData(userProfile);
     });
@@ -165,6 +166,7 @@ $(document).ready(function () {
     
 
     function writeUserData(userProfile) {
+        document.getElementById('profilePageMsg').innerHTML = "Your Profile has been Updated!!! ";
         firebase.database().ref('user_profiles/' + currentUser.uid).set({
             displayName:currentUser.displayName,
             firstname: userProfile.firstname,

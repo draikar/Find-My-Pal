@@ -61,7 +61,6 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
     $scope.showError = function (currentParent) {
 
         $(function () {
-            console.log($(currentParent));
             $(currentParent).find("p#noEventMatch").hide();
         });
 
@@ -91,13 +90,12 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         eventObj.createdBy = uid;
         eventObj.username = currrent_user_displayName;
         
-        console.log(eventObj);
+
         var events = $firebaseArray(databaseRef);
 
         events.$add(eventObj).then(function (databaseRef) {
 
             var id = databaseRef.key;
-            console.log("added record with id " + id);
 
             updateObject(id);
 
@@ -168,7 +166,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
     $scope.EditEvent = function (event) {
         
-        console.log(event);
+
         $scope.myView = "newEventCreation";
         $scope.editPost = true;
         $scope.newPost = false;
@@ -302,7 +300,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
             
             $scope.myView = "trimmedActivites";
             $scope.events = $firebaseArray(databaseRefTrimResults);
-            console.log($scope.events);
+            
             $scope.myTitle = eventTitle;
            
         }
@@ -344,15 +342,11 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         $scope.myView = "currentEventView";
         $scope.currentObjId = event.id;
         $scope.userCreatedEvent = false;
-        //$scope.currentEvent = event;
-
-        //$scope.viewcount = 1;
-        console.log(event);
+        
         var currentViewObject = eventsDB.child(event.createdBy);
         $scope.Events = $firebaseArray(currentViewObject);
 
-        console.log($scope.currentEvent);
-
+        
         //Check for Joined Activity 
         if (event.createdBy == uid) {
 
@@ -389,7 +383,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         
         var newEvent = angular.copy(event); //This is created to preserve the $$hashkey,$id,$priority property in the original object
        
-        console.log(newEvent);
+        
         var id;
         if (event.$id) {
             id = event.$id;
@@ -548,10 +542,10 @@ $(document).ready(function () {
 
         if (user) {
             currentUser = user;
-            console.log(firebase.database().ref('/user_profiles/' + uid));
+            
             
             firebase.database().ref('/user_profiles/' + uid).once('value').then(function (snapshot) {
-                console.log(snapshot.val());
+                
                 var username = snapshot.val().nickname;
                 if (username) {
                     document.getElementById("username").innerHTML = username;
@@ -658,50 +652,50 @@ $(document).ready(function () {
 
 
 //==========Show all registerd Users =========//
-function viewAll() {
+//function viewAll() {
 
-    $(function () {
+//    $(function () {
 
-        $(".registeredUsers ul li").each(function () {
+//        $(".registeredUsers ul li").each(function () {
 
-            $(this).show();
+//            $(this).show();
 
-        });
-        $(".registeredUsers ul:last-child").append('<li onClick="viewLess()"  class="viewUsers" id="viewLessUsers">view less</li>');
-        $(".registeredUsers #viewAllUsers").remove();
-    });
-}
+//        });
+//        $(".registeredUsers ul:last-child").append('<li onClick="viewLess()"  class="viewUsers" id="viewLessUsers">view less</li>');
+//        $(".registeredUsers #viewAllUsers").remove();
+//    });
+//}
 
 
-function viewLess() {
+//function viewLess() {
 
-    $(function () {
+//    $(function () {
 
-        var limit = 2;
-        var i = 0;
-        var viewLimitExceeds = false;
+//        var limit = 2;
+//        var i = 0;
+//        var viewLimitExceeds = false;
 
-        $(".registeredUsers ul li").each(function () {
+//        $(".registeredUsers ul li").each(function () {
 
-            if (i <= limit) {
-                $(this).show();
-                i++;
-            }
-            else {
-                $(this).hide();
-                viewLimitExceeds = true;
-            }
+//            if (i <= limit) {
+//                $(this).show();
+//                i++;
+//            }
+//            else {
+//                $(this).hide();
+//                viewLimitExceeds = true;
+//            }
 
-        });
+//        });
 
-        if (viewLimitExceeds == true) {
-            $(".registeredUsers ul:last-child").append('<li onClick="viewAll()"  class="viewUsers" id="viewAllUsers">view all registered Users</li>');
-            $(".registeredUsers #viewLessUsers").remove();
-        }
+//        if (viewLimitExceeds == true) {
+//            $(".registeredUsers ul:last-child").append('<li onClick="viewAll()"  class="viewUsers" id="viewAllUsers">view all registered Users</li>');
+//            $(".registeredUsers #viewLessUsers").remove();
+//        }
 
-    });
+//    });
 
-}
+//}
 //==========Show all registerd Users =========//
 
 
