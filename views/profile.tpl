@@ -82,7 +82,7 @@
 			<input type="radio" name="education-year" value = "Junior">Junior</input>
 			<input type="radio" name="education-year" value = "Senior">Senior</input>
 			<input type="radio" name="education-year" value = "Other">Other</input>
-			<input type="text" id="other-edu-year" placeholder="Please specify the category" />
+			<!--<input type="text" id="other-edu-year" placeholder="Please specify the category" />-->
 		</div>
 		<br>
 		<div class="user-interested-category">

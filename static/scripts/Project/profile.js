@@ -32,10 +32,13 @@ $(document).ready(function () {
 
     firebase.auth().onAuthStateChanged(function (user) {
 
+        
         if (user) {
             currentUser = user;
             document.getElementById("username").innerHTML = user.displayName;
-
+            var userName = user.displayName.split(" ");
+            document.getElementById("firstname").value = userName[0];
+            document.getElementById("lastname").value = userName[userName.length - 1];
         }
         else {
             console.log('error');

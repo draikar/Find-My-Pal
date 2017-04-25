@@ -21,9 +21,22 @@ var config = {
 firebase.initializeApp(config);
 
 var currrent_user_displayName;
-firebase.database().ref('/user_profiles/' + uid).once('value').then(function (snapshot) {
-    currrent_user_displayName = snapshot.val().displayName;
+
+firebase.auth().onAuthStateChanged(function (user) {
+
+    if (user) {
+        currrent_user_displayName = user.displayName;
+       
+    }
+    else {
+        console.log('error');
+    }
+
 });
+
+//firebase.database().ref('/user_profiles/' + uid).once('value').then(function (snapshot) {
+//    currrent_user_displayName = snapshot.val().displayName;
+//});
 
 
 /* ================== Event Management ============================*/
