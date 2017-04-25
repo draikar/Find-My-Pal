@@ -295,7 +295,7 @@ $(document).ready(function () {
 
     });
 
-    $(".profile #site-logo").on('click', function () {
+    $(".profile #site-logo,#activityPage").on('click', function () {
 
 
         $("#homepage input").val(uid);

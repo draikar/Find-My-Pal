@@ -26,6 +26,7 @@
 			<img  id="site-logo" src="../static/images/friends.jpg"></img>
 			<label>FindMyPal</label>
 			<ul>
+				<li id="activityPage"> Home </li>
 				<li id="logout"><a href="/">Sign Out</a></li>
 		
 			</ul>

@@ -41,6 +41,23 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
     $scope.myView = "allActivites";
     $scope.newPost = true;
 
+
+    //==================Show Error Message if nothing exists =================//
+
+
+    $scope.showError = function (currentParent) {
+
+        $(function () {
+            console.log($(currentParent));
+            $(currentParent).find("p#noEventMatch").hide();
+        });
+
+
+    }
+
+
+    //==================Show Error Message if nothing exists =================//
+
     //====================New Event Posting to database =======================//
     var eventObj = {};
     
@@ -258,6 +275,10 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
     $scope.trimmedResult = function (eventTitle) {
     
+        $(function () {
+
+            $('.trimmedViewNoEventErrorMsg').show();
+        });
 
         var databaseRefTrimResults = firebase.database().ref().child('Events');
 
@@ -279,6 +300,13 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         else {
             
             // Interested Activities 
+            $(function () {
+                $("#profilePage").click(function () {
+
+                    $("#homepage input").val(uid);
+                    $("#homepage").submit();
+                });
+            })
             $scope.myView = "interestedActivities";
             var databaseUserProfileRef = firebase.database().ref().child('user_profiles');
             var specificUsrRef = databaseUserProfileRef.child(uid + "/interested_category");
@@ -581,16 +609,20 @@ $(document).ready(function () {
 
 
     //Profile Page Forwarding 
+   
 
-    $(".activity #profile_picture,.activity #profile-name ").on('click', function () {
 
+    $(".activity #profile_picture,.activity #profile-name, .profile").on('click', function () {
 
+       
         $("#homepage input").val(uid);
         $("#homepage").submit();
 
 
     });
 
+
+    
 
 
     //$(".left-nav-list p").on('click', function () {

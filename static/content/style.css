@@ -261,7 +261,7 @@
          width:75px;
          height:75px;
          border:1px solid #fff;
-         background:#808080;
+         /*background:#808080;*/
          border: none;
          cursor:pointer;
          margin-bottom:15px;
@@ -460,7 +460,7 @@
     div#filterByCategory {
         clear:both;
         margin-top:20px;
-        padding-top:20px;
+        /*padding-top:20px;*/
     }
 
     p#categoryLabel,li#categoryLabel {
@@ -550,10 +550,11 @@
         height:50px;
         float:left;
     }
-    #createNew {
+    #createNew,.createNew {
         text-decoration:underline;
         color:darkgray;
         cursor:pointer;
+        
     }
     #banner {
     width: 100%;

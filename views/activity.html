@@ -3,7 +3,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="myApp">
 <head>
     <meta charset="utf-8" />
-    <title>Profile Info</title>
+    <title>Activity Sharing</title>
 	
 	<link rel="stylesheet" href="../static/content/style.css" />
     
@@ -34,7 +34,9 @@
 			<label>FindMyPal</label>
 			<ul>
                
+                <li class="profile"><a>Profile</a></li>
 				<li id="logout"><a href="/">Sign Out</a></li>
+                
 		
 			</ul>
 
@@ -174,12 +176,13 @@
         <!-- Interested Category Posts -->
 
         <p id="banner" ng-if="'interestedActivities' == myView"> Recommended Activities</p>
-        <div ng-if="'interestedActivities' == myView" id="createdActivites">
+        <div ng-if="'interestedActivities' == myView" id="createdActivites" class="recommendedActivitiesView">
   
+            <p id="noEventMatch" ng-hide="joinedActivities.length"> Oops!!! No event matches your interest. Consider Changing your interest here <a class="createNew" id="profilePage"> Profile Setiings </a> </p>
                 <div ng-repeat="myTitle in interestedCategory" id="filterByCategory">
                    
                     <ul ng-repeat="users in events">
-                        <li ng-click="viewCurrentEvent(event)" ng-repeat="event in users" ng-if="event.category == myTitle.$value">
+                        <li ng-click="viewCurrentEvent(event)" ng-repeat="event in users" ng-if="event.category == myTitle.$value" ng-init="showError('.recommendedActivitiesView')">
 
                             <ul ng-show="angular.isObject(event)"  class="event trimmedView">
                                 
@@ -218,8 +221,8 @@
 
         <p id="banner" ng-if="'allActivites' == myView" > All Activities</p>
 
-        <div ng-if="'allActivites' == myView" id="createdActivites">
-            
+        <div ng-if="'allActivites' == myView" id="createdActivites" class="allActivitiesView">
+            <p id="noEventMatch" ng-hide="joinedActivities.length"> Oops!!! No events exists in this category. would you like to post one ? <a id="createNew" ng-click="showNewEventCreation()"> Create here </a> </p>
             <ul ng-repeat="users in events">
 
                 <!--<li ng-repeat="(key, value) in users">
@@ -229,7 +232,7 @@
 
                 <li ng-click="viewCurrentEvent(event,key)" ng-repeat="event in users">
                    
-                    <ul ng-show="angular.isObject(event)" class="event trimmedView">
+                    <ul ng-show="angular.isObject(event)" ng-f="angular.isObject(event)" ng-init="showError('.allActivitiesView')"class="event trimmedView">
                        
                         <li id="categoryLabel" ng-bind="event.category"></li>
                         <li class="eventContentOverflow" ng-bind="'Title:' + (event.title)"></li>
@@ -261,7 +264,7 @@
 
         <p id="banner" ng-if="'trimmedActivites' == myView" ng-bind="myTitle"></p>
         <div ng-if="'trimmedActivites' == myView" id="createdActivites"class="trimmedActivitiesView">
-
+            <p id="noEventMatch" class="trimmedViewNoEventErrorMsg" ng-hide="joinedActivities.length"> Oops!!! No events exists in this category. would you like to post one ? <a id="createNew" ng-click="showNewEventCreation()"> Create here </a> </p>
             <ul ng-repeat="users in events">
                 
                 <!--<li ng-repeat="(key, value) in users">
@@ -269,7 +272,7 @@
 
                 </li>-->
 
-                <li ng-click="viewCurrentEvent(event,key)" ng-repeat="event in users" ng-if="event.category == myTitle">
+                <li ng-click="viewCurrentEvent(event,key)" ng-repeat="event in users" ng-if="event.category == myTitle" ng-init="showError('.trimmedActivitiesView')">
                    
                     <ul ng-show="angular.isObject(event)" class="event trimmedView">
                         
@@ -339,8 +342,10 @@
 
         <!-- Joined Activites -->
         <p id="banner" ng-if="'joinedActivities' == myView"> Joined Activities</p>
+       
             <div  ng-if="'joinedActivities' == myView" id="createdActivites" class="joinedActivitiesView">
 
+                <p id="noEventMatch" ng-hide="joinedActivities.length"> Oops!!! You have not joined any Event. <a id="createNew" ng-click="trimmedResult('all')"> Join here</a> </p>
                 <ul id="newEvent" ng-repeat="users in events">
 
                     <!--<li ng-repeat="(key, value) in users">
@@ -349,9 +354,7 @@
         </li>-->
                    
                     <li ng-click="viewCurrentEvent(event,key)" ng-repeat="event in users" >
-                        <ul ng-repeat="joinedUser in event.joinedUserIds" ng-if="joinedUser == currentUsrId" class="event trimmedView">
-
-                           
+                        <ul ng-repeat="joinedUser in event.joinedUserIds" ng-if="joinedUser==currentUsrId"  ng-init="showError('.joinedActivitiesView')" class="event trimmedView">
 
                                 <!--<li class="eventContentOverflow" ng-bind="'ID:' + (event.id)"></li>-->
                                 <li class="eventContentOverflow" ng-bind="'Title:' + (event.title)"></li>
@@ -376,7 +379,7 @@
 
                 
                 
-                <!--<p id="noEventMatch" ng-hide="joinedActivities.length"> Oops!!! You have not joined any Event. <a id="createNew" ng-click="trimmedResult('all')"> Join here</a> </p>-->
+                
 
             </div>
 
