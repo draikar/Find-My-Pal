@@ -150,7 +150,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
                 return
                 
             }
-            else if (eventTime_hours = current_time_hours) {
+            else if (eventTime_hours == current_time_hours) {
 
                 if (eventTime_minutes <= current_time_minutes) {
 
