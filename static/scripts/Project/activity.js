@@ -46,7 +46,9 @@ var app = angular.module('myApp', ['firebase']);
 var databaseRef = firebase.database().ref().child('Events').child(uid);
 var eventsDB = firebase.database().ref().child('Events');
 
-
+//Uncommnet below for testing
+//var databaseRef = firebase.database().ref().child('TestDB-Events').child(uid);
+//var eventsDB = firebase.database().ref().child('TestDB-Events');
 app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObject', function ($scope, $firebaseArray, $firebaseObject) {
 
    
@@ -146,6 +148,12 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
             if (eventTime_hours < current_time_hours) {
                 
                 if (date === "") {
+
+                    document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Date";
+                    showMsg();
+                    return
+                }
+                else if (date !== "" && dateString < today) {
 
                     document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Date";
                     showMsg();
