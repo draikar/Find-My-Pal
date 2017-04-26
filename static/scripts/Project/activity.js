@@ -497,15 +497,6 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         //Check for Joined Activity 
        
        
-        
-       
-
-        //=======================Limiting the registered Users====================== //
-
-        viewLess();
-
-        
-        //=======================Limiting the registered Users====================== //
 
 
     }
@@ -564,24 +555,29 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
     function joinedActivity(event) {
 
-        var event = eventsDB.child(event.createdBy);
-        var eventsJoined = $firebaseArray(event);
-
+        
+       
+        var event = eventsDB.child(event.createdBy + "/" + event.id);
+        var eventsJoined = $firebaseObject(event);
 
         var userId = [];
 
 
         eventsJoined.$loaded().then(function (eventsJoined) {
 
-            angular.forEach(eventsJoined, function (value, index) {
-                userId = value.joinedUserIds;
+            userId = eventsJoined.joinedUserIds;
 
-            })
+            //angular.forEach(eventsJoined, function (value, index) {
+               
+            //    userId = value.joinedUserIds;
+            //    console.log(value.joinedUserIds);
+            //});
 
             $scope.joinUser = true;
+            
 
             if (userId.indexOf(uid) !== -1) {
-
+                
                 $scope.recordExist = true;
             }
 
