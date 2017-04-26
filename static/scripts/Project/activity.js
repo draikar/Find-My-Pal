@@ -86,9 +86,9 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         var description = document.getElementById('event-description').value.trim();
         var location = document.getElementById('event-location').value.trim();
         var time = document.getElementById('event-time').value.trim();
-        var dateString = document.getElementById('event-date').value.trim();
-        dateString = dateString.replace(/-/g, "/"); //Converting to proper date format which takes Standard Time into account.
-        var date = new Date(dateString);
+        var date = document.getElementById('event-date').value.trim();
+        var currentDate = date.replace(/-/g, "/"); //Converting to proper date format which takes Standard Time into account.
+        var dateString = new Date(currentDate);
         var today = new Date();
         var current_time_hours = today.getHours();
         var current_time_minutes = today.getMinutes();
@@ -144,10 +144,22 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
             console.log(current_time_hours + ":" + current_time_minutes);
             
             if (eventTime_hours < current_time_hours) {
+                
+                if (date === "") {
 
-                document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Time";
-                showMsg();
-                return
+                    document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Date";
+                    showMsg();
+                    return
+                }
+                else if (date !== "" && dateString > today) {
+                    eventObj.time = time;
+                }
+                else {
+                    document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Time";
+                    showMsg();
+                    return
+                }
+               
                 
             }
             else if (eventTime_hours == current_time_hours) {
@@ -159,6 +171,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
                     return
                 }
                 else {
+                    
                     eventObj.time = time;
                 }
             }
@@ -169,13 +182,13 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         }
        
 
-        if (dateString === "") {
+        if (date === "") {
             document.getElementById("eventMessage").innerHTML = "Please Enter the Event Date";
             showMsg();
             return
         }
         
-        else if (dateString !== "" && date < today) {
+        else if (date !== "" && dateString < today) {
             
             document.getElementById("eventMessage").innerHTML = "Please choose a valid date";
             showMsg();
@@ -183,7 +196,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         }
         else {
             
-            eventObj.date = dateString;
+            eventObj.date = date;
         }
 
         
