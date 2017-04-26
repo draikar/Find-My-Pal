@@ -79,16 +79,122 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
        
         eventObj.users = [];
         eventObj.joinedUserIds = [];
-        eventObj.title = document.getElementById('event-title').value;
-        eventObj.description = document.getElementById('event-description').value;
-        eventObj.location = document.getElementById('event-location').value;
-        eventObj.time = document.getElementById('event-time').value;
-        eventObj.date = document.getElementById('event-date').value;
-        eventObj.category = document.getElementById('event-category').value;
+       
+
+        var title = document.getElementById('event-title').value.trim();
+        var category = document.getElementById('event-category').value.trim();
+        var description = document.getElementById('event-description').value.trim();
+        var location = document.getElementById('event-location').value.trim();
+        var time = document.getElementById('event-time').value.trim();
+        var dateString = document.getElementById('event-date').value.trim();
+        dateString = dateString.replace(/-/g, "/"); //Converting to proper date format which takes Standard Time into account.
+        var date = new Date(dateString);
+        var today = new Date();
+        var current_time_hours = today.getHours();
+        var current_time_minutes = today.getMinutes();
+
+        today.setHours(0, 0, 0, 0) //This is required to compare the date without time into account. We will be validating time in other scenario.
+
+       
+
+        // Validations 
+
+        if (title === "") {
+            document.getElementById("eventMessage").innerHTML = "Please Enter the Event Title";
+            showMsg();
+            return
+        } else {
+            eventObj.title = title;
+        }
+       
+        if (category === "none") {
+            document.getElementById("eventMessage").innerHTML = "Please Select the Event Category";
+            showMsg();
+            return
+        } else {
+            eventObj.category = category;
+        }
+
+        if (description === "") {
+            document.getElementById("eventMessage").innerHTML = "Please Enter the Event Description";
+            showMsg();
+            return
+        } else {
+            eventObj.description = description;
+        }
+
+        if (location === "") {
+            document.getElementById("eventMessage").innerHTML = "Please Enter the Event Location";
+            showMsg();
+            return
+        } else {
+            eventObj.location = location;
+        }
+
+        if (time === "") {
+            document.getElementById("eventMessage").innerHTML = "Please Enter the Event Time";
+            showMsg();
+            return
+        }
+        else {
+            var eventTime = time.split(":");
+            var eventTime_hours = eventTime[0];
+            var eventTime_minutes = eventTime[1];
+            console.log(eventTime_hours + ":" + eventTime_minutes);
+            console.log(current_time_hours + ":" + current_time_minutes);
+            
+            if (eventTime_hours < current_time_hours) {
+
+                document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Time";
+                showMsg();
+                return
+                
+            }
+            else if (eventTime_hours = current_time_hours) {
+
+                if (eventTime_minutes <= current_time_minutes) {
+
+                    document.getElementById("eventMessage").innerHTML = "Please Enter the Valid Time";
+                    showMsg();
+                    return
+                }
+                else {
+                    eventObj.time = time;
+                }
+            }
+            else {
+                eventObj.time = time;
+            }
+            
+        }
+       
+
+        if (dateString === "") {
+            document.getElementById("eventMessage").innerHTML = "Please Enter the Event Date";
+            showMsg();
+            return
+        }
+        
+        else if (dateString !== "" && date < today) {
+            
+            document.getElementById("eventMessage").innerHTML = "Please choose a valid date";
+            showMsg();
+            return
+        }
+        else {
+            
+            eventObj.date = dateString;
+        }
+
+        
+
         eventObj.joinedUserIds.push(uid);
         eventObj.users.push(currrent_user_displayName);
         eventObj.createdBy = uid;
         eventObj.username = currrent_user_displayName;
+
+
+        // Validations
         
 
         var events = $firebaseArray(databaseRef);
@@ -161,6 +267,14 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         });
     }
     //====================New Event Posting to database =======================//
+
+    function showMsg() {
+
+        $("#eventMessage").slideDown();
+        setTimeout(function () {
+            $("#eventMessage").slideUp();
+        }, 3000)
+    }
 
     //====================Edit Event ===================================//
 
