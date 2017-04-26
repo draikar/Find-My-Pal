@@ -34,21 +34,18 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 });
 
-//firebase.database().ref('/user_profiles/' + uid).once('value').then(function (snapshot) {
-//    currrent_user_displayName = snapshot.val().displayName;
-//});
 
 
 /* ================== Event Management ============================*/
 
 var app = angular.module('myApp', ['firebase']);
 
-var databaseRef = firebase.database().ref().child('Events').child(uid);
-var eventsDB = firebase.database().ref().child('Events');
 
-//Uncommnet below for testing
-//var databaseRef = firebase.database().ref().child('TestDB-Events').child(uid);
-//var eventsDB = firebase.database().ref().child('TestDB-Events');
+var databaseRef = firebase.database().ref().child('Events')
+
+//Uncommnet this for testing
+//var databaseRef = firebase.database().ref().child('TestDB-Events')
+
 app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObject', function ($scope, $firebaseArray, $firebaseObject) {
 
    
@@ -397,6 +394,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
         $scope.myView = "createdActivities";
         $scope.events = $firebaseArray(databaseRef);
+        $scope.currentUser = uid;
        
 
     }
@@ -478,8 +476,8 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         $scope.currentObjId = event.id;
         $scope.userCreatedEvent = false;
         
-        var currentViewObject = eventsDB.child(event.createdBy);
-        $scope.Events = $firebaseArray(currentViewObject);
+        //var currentViewObject = eventsDB.child(event.createdBy);
+        $scope.Events = $firebaseArray(databaseRef);
 
         
         //Check for Joined Activity 
@@ -532,7 +530,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         delete newEvent.$id;
         delete newEvent.$priority;
 
-        eventsDB.child(event.createdBy).child(event.id).set(newEvent).then(function () {
+        databaseRef.child(event.id).set(newEvent).then(function () {
 
             //$scope.events = $firebaseArray(databaseRef);
             $(function () {
@@ -557,7 +555,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
         
        
-        var event = eventsDB.child(event.createdBy + "/" + event.id);
+        var event = databaseRef.child(event.id);
         var eventsJoined = $firebaseObject(event);
 
         var userId = [];
@@ -619,7 +617,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
         }
        
 
-        eventsDB.child(event.createdBy).child(event.id).set(newEvent).then(function () {
+        databaseRef.child(event.id).set(newEvent).then(function () {
 
             
             $(function () {
@@ -642,7 +640,7 @@ app.controller('ActivityController', ['$scope', '$firebaseArray', '$firebaseObje
 
         $scope.myView = "joinedActivities";
 
-        $scope.events = $firebaseArray(eventsDB);
+        $scope.events = $firebaseArray(databaseRef);
         $scope.currentUsrId = uid;
         
 
